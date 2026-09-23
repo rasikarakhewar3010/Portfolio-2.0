@@ -42,6 +42,7 @@ const TECH_SNIPPETS = [
 
 export default function BackgroundReveal() {
   const [mounted, setMounted] = useState(false);
+  const [maskRadius, setMaskRadius] = useState(280);
 
   // Framer Motion absolute smooth tracking
   const mouseX = useMotionValue(-1000); // Start far offscreen
@@ -52,25 +53,31 @@ export default function BackgroundReveal() {
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
+  // Dynamic mask radius based on scroll — creates "opening up" feeling
+  const maskRadiusSpring = useSpring(maskRadius, { damping: 30, stiffness: 100 });
+
   // Create the radial gradient string dynamically from the springs
   const maskImage = useTransform(
-    [smoothX, smoothY],
-    ([x, y]) => `radial-gradient(circle 280px at ${x}px ${y}px, black 0%, transparent 100%)`
+    [smoothX, smoothY, maskRadiusSpring],
+    ([x, y, r]) => `radial-gradient(circle ${r}px at ${x}px ${y}px, black 0%, transparent 100%)`
   );
 
-  // Generate static positions for the texts once
+  // Generate static positions for the texts once — with float animation params
   const snippets = useMemo(() => {
     if (typeof window === 'undefined') return [];
     const items = [];
-    // Create a dense grid of text
     for (let i = 0; i < 150; i++) {
       items.push({
         id: i,
         text: TECH_SNIPPETS[Math.floor(Math.random() * TECH_SNIPPETS.length)],
-        top: Math.random() * 100, // percentage
-        left: Math.random() * 100, // percentage
+        top: Math.random() * 100,
+        left: Math.random() * 100,
         fontSize: 12 + Math.random() * 14,
         opacity: 0.3 + Math.random() * 0.5,
+        // Randomized float animation parameters
+        floatDistance: -(4 + Math.random() * 8), // -4px to -12px
+        floatDuration: 8 + Math.random() * 7, // 8s to 15s
+        floatDelay: Math.random() * -15, // Random start offset
       });
     }
     return items;
@@ -84,14 +91,28 @@ export default function BackgroundReveal() {
       mouseY.set(e.clientY);
     };
 
+    // Scroll-responsive mask radius: grows as user scrolls deeper
+    const handleScroll = () => {
+      const scrollFraction = Math.min(window.scrollY / (document.body.scrollHeight - window.innerHeight), 1);
+      const newRadius = 200 + scrollFraction * 150; // 200px → 350px
+      setMaskRadius(newRadius);
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [mouseX, mouseY]);
 
   if (!mounted) return null;
 
   return (
     <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 2, delay: 1 }}
       style={{
         position: 'absolute',
         top: 0,
@@ -117,6 +138,9 @@ export default function BackgroundReveal() {
             fontSize: `${snippet.fontSize}px`,
             color: `rgba(255, 255, 255, ${snippet.opacity})`,
             whiteSpace: 'nowrap',
+            // Float animation via CSS custom properties
+            '--float-distance': `${snippet.floatDistance}px`,
+            animation: `snippetFloat ${snippet.floatDuration}s ease-in-out ${snippet.floatDelay}s infinite`,
             transform: 'translate(-50%, -50%)',
           }}
         >

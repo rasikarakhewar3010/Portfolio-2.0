@@ -2005,3 +2005,275 @@ img {
   }
 }
 
+
+/* ---------- Animation Enhancements ---------- */
+
+/* Frosted Nav Backdrop */
+.navigation.nav-frosted {
+  background: rgba(45, 0, 5, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.4s ease, backdrop-filter 0.4s ease;
+}
+
+/* Nav Letter Wave */
+.nav-char {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.nav-link:hover .nav-char {
+  animation: navCharWave 0.4s var(--ease-out-expo) forwards;
+}
+
+@keyframes navCharWave {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+/* Skills Marquee Ticker */
+.skills-marquee-container {
+  overflow: hidden;
+  width: 100%;
+  padding: 2rem 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+.skills-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+
+.skills-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.skills-marquee-item {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(158, 0, 24, 0.12);
+  white-space: nowrap;
+  padding: 0 1.5rem;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Shimmer Fallback for Project Cards */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s ease-in-out infinite;
+}
+
+/* Scroll Progress Bar */
+.scroll-progress-container {
+  width: 100%;
+  max-width: 300px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 1rem auto 0;
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.scroll-progress-fill {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 1px;
+  transition: width 0.1s linear;
+}
+
+/* Contact Warm Gradient Orb */
+.contact-gradient-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60vw;
+  height: 60vw;
+  max-width: 800px;
+  max-height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(163, 0, 32, 0.12) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: gradientDrift 25s ease-in-out infinite;
+}
+
+@keyframes gradientDrift {
+  0%, 100% { transform: translate(-50%, -50%) translate(0, 0); }
+  25% { transform: translate(-50%, -50%) translate(30px, -20px); }
+  50% { transform: translate(-50%, -50%) translate(-20px, 30px); }
+  75% { transform: translate(-50%, -50%) translate(20px, 20px); }
+}
+
+/* 3D Flip Text Perspective */
+.perspective-container {
+  perspective: 1000px;
+}
+
+/* Social Link Flip */
+.social-link-flip {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.social-link-flip .flip-text {
+  display: block;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.social-link-flip:hover .flip-text {
+  transform: translateY(-100%);
+}
+
+.social-link-flip .flip-text-clone {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.social-link-flip:hover .flip-text-clone {
+  transform: translateY(-100%);
+}
+
+/* Credentials Button Shimmer */
+.certificates-trigger-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.certificates-trigger-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(201, 169, 110, 0.12) 50%,
+    transparent 100%
+  );
+  animation: btnShimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btnShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Back to Top Button */
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+}
+
+.back-to-top:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.back-to-top .arrow-up {
+  display: inline-block;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+
+.back-to-top:hover .arrow-up {
+  transform: translateY(-3px);
+}
+
+/* Cursor Ghost Trail */
+.cursor-ghost {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Snippet Float */
+@keyframes snippetFloat {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(var(--float-distance, -8px)); }
+}
+
+/* Arrow Pulse */
+@keyframes arrowPulse {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.06); }
+}
+
+.carousel-arrow:not(:hover) {
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+.carousel-arrow:hover {
+  animation: none;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Email Glitch Effect */
+@keyframes emailGlitch {
+  0% { text-shadow: 2px 0 rgba(255, 0, 0, 0.4), -2px 0 rgba(0, 255, 255, 0.4); }
+  25% { text-shadow: -2px 0 rgba(255, 0, 0, 0.4), 2px 0 rgba(0, 255, 255, 0.4); }
+  50% { text-shadow: 1px 0 rgba(255, 0, 0, 0.4), -1px 0 rgba(0, 255, 255, 0.4); }
+  75% { text-shadow: -1px 0 rgba(255, 0, 0, 0.2), 1px 0 rgba(0, 255, 255, 0.2); }
+  100% { text-shadow: none; }
+}
+
+.contact-email:hover {
+  animation: emailGlitch 0.2s ease-out;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .noise-overlay {
+    animation: none !important;
+  }
+  
+  .skills-marquee-track {
+    animation: none !important;
+  }
+}

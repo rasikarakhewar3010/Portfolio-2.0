@@ -65,12 +65,15 @@ export default function Projects() {
   const scrollRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const checkScroll = () => {
     if (!scrollRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
     setCanScrollLeft(scrollLeft > 10);
     setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    const maxScroll = scrollWidth - clientWidth;
+    setScrollProgress(maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0);
   };
 
   useEffect(() => {
@@ -146,7 +149,7 @@ export default function Projects() {
                       }
                     }}
                   />
-                  <div className="project-card-fallback-gradient" style={{ display: 'none' }}>
+                  <div className="project-card-fallback-gradient shimmer-effect" style={{ display: 'none' }}>
                     <span>{project.title[0]}</span>
                   </div>
 
@@ -199,10 +202,15 @@ export default function Projects() {
         <div className={`carousel-fade-edge fade-right ${canScrollRight ? 'visible' : ''}`} />
       </div>
 
-      {/* Scroll progress indicator */}
+      {/* Scroll progress bar + hint */}
       <div className="projects-scroll-hint">
         <span>Scroll to explore</span>
-        <div className="scroll-hint-line" />
+        <div className="scroll-progress-container">
+          <div
+            className="scroll-progress-fill"
+            style={{ width: `${scrollProgress}%` }}
+          />
+        </div>
       </div>
     </section>
   );

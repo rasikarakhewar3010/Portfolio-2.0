@@ -132,10 +132,10 @@ export default function Skills() {
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={hoveredSkills[cat.index] ? hoveredSkills[cat.index].name : 'default'}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.15 }}
+                    initial={{ opacity: 0, y: 5, filter: 'blur(4px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, y: -5, filter: 'blur(4px)' }}
+                    transition={{ duration: 0.2 }}
                     className={`skills-commentary ${
                       hoveredSkills[cat.index] ? 'has-hover' : ''
                     }`}
@@ -146,6 +146,23 @@ export default function Skills() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Marquee Ticker */}
+        <div className="skills-marquee-container">
+          <div className="skills-marquee-track">
+            {[...Array(2)].map((_, setIndex) => (
+              <div key={setIndex} style={{ display: 'flex' }}>
+                {SKILLS_DATA.flatMap((cat) =>
+                  cat.items.map((item) => (
+                    <span key={`${setIndex}-${item.name}`} className="skills-marquee-item">
+                      {item.name} •
+                    </span>
+                  ))
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
